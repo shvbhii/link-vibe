@@ -52,11 +52,11 @@ export default async function UserPage({ params }: { params: { username: string 
                 {link.title}
               </a>
             ))
-          ) : (
-            <div className="text-center p-6 bg-white/70 backdrop-blur-sm rounded-xl">
-                <p className="text-slate-600">This user hasn't added any links yet.</p>
-            </div>
-          )}
+         ) : (
+  <div className="text-center p-6 bg-white/70 backdrop-blur-sm rounded-xl">
+      <p className="text-slate-600">This user hasn't added any links yet.</p>
+  </div>
+)}
         </div>
         <div className="text-center mt-12">
             <Link href="/" className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">
