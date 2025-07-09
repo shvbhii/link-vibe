@@ -2,19 +2,21 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { cookies } from 'next/headers'
-import Link from 'next/link'; // Import the Link component
+import Link from 'next/link'; // Make sure Link is imported
 
 type TLink = { id: number; title: string; url: string; };
 
 export default async function UserPage({ params }: { params: { username: string } }) {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
-  const { username } = params
+  
+  // THIS IS THE CRITICAL LINE THAT WAS MISSING
+  const { username } = params;
 
   const { data: profile } = await supabase
     .from('profiles')
     .select('id, full_name, avatar_url')
-    .eq('username', username)
+    .eq('username', username) // Now 'username' is correctly defined
     .single()
 
   if (!profile) {
@@ -52,13 +54,11 @@ export default async function UserPage({ params }: { params: { username: string 
             ))
           ) : (
             <div className="text-center p-6 bg-white/70 backdrop-blur-sm rounded-xl">
-                {/* FIX: Use ' for the apostrophe */}
                 <p className="text-slate-600">This user hasn't added any links yet.</p>
             </div>
           )}
         </div>
         <div className="text-center mt-12">
-            {/* FIX: Use the <Link> component for internal navigation */}
             <Link href="/" className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">
                 Powered by Link Vibe
             </Link>

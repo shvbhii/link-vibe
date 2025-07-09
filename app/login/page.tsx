@@ -1,4 +1,3 @@
-// app/login/page.tsx
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
@@ -12,6 +11,7 @@ export default function Login() {
   const router = useRouter()
   const supabase = createClient()
 
+  // ... (handleSignIn function is the same)
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const { error } = await supabase.auth.signInWithPassword({
@@ -29,6 +29,7 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-50">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-lg">
+        {/* ... (the form is the same) */}
         <div className="text-center">
             <h1 className="text-3xl font-bold text-slate-800">Welcome Back</h1>
             <p className="mt-2 text-slate-500">Login to manage your Link Vibe</p>
@@ -56,7 +57,7 @@ export default function Login() {
           </button>
         </form>
         <p className="text-sm text-center text-slate-600">
-          {/* FIX: Use ' for the apostrophe */}
+          {/* RE-CONFIRMING THE FIX HERE */}
           Don't have an account?{' '}
           <Link href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 hover:underline">
             Sign Up
