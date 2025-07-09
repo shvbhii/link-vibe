@@ -56,6 +56,7 @@ export default function Login() {
           </button>
         </form>
         <p className="text-sm text-center text-slate-600">
+          {/* FIX: Use ' for the apostrophe */}
           Don't have an account?{' '}
           <Link href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 hover:underline">
             Sign Up

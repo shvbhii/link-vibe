@@ -8,13 +8,11 @@ import { User } from '@supabase/supabase-js'
 import { Trash2, PlusCircle, Link as LinkIcon } from 'lucide-react'
 
 type TLink = { id: number, user_id: string, title: string, url: string, created_at: string }
-type Profile = { username: string | null, full_name: string | null }
 
 export default function LinkManager({ initialLinks }: { initialLinks: TLink[] }) {
   const supabase = createClient()
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
-  const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState('')
   const [links, setLinks] = useState<TLink[]>(initialLinks)
@@ -27,10 +25,9 @@ export default function LinkManager({ initialLinks }: { initialLinks: TLink[] })
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         setUser(user)
-        const { data: profileData, error } = await supabase.from('profiles').select('username, full_name').eq('id', user.id).single()
+        const { data: profileData, error } = await supabase.from('profiles').select('username').eq('id', user.id).single()
         if (error) console.error('Error fetching profile:', error)
         else if (profileData) {
-          setProfile(profileData)
           setUsername(profileData.username || '')
         }
       }
@@ -72,14 +69,14 @@ export default function LinkManager({ initialLinks }: { initialLinks: TLink[] })
   if (loading) return <div className="text-center p-8">Loading your dashboard...</div>
 
   return (
+    // The rest of the JSX is the same, no changes needed here
     <div className="space-y-8">
       <div className="grid md:grid-cols-2 gap-8">
-        {/* Profile Card */}
         <div className="p-6 bg-white border border-slate-200 rounded-xl shadow-sm">
           <h3 className="text-xl font-semibold mb-4 text-slate-800">Your Public Profile</h3>
           <p className="text-sm text-slate-500 mb-4">
             Your public page is:{' '}
-            <a href={username ? `/${username}` : '#'} target="_blank" className="font-medium text-indigo-600 hover:underline">
+            <a href={username ? `/${username}` : '#'} target="_blank" rel="noopener noreferrer" className="font-medium text-indigo-600 hover:underline">
               link-vibe/{username || "..."}
             </a>
           </p>
@@ -95,8 +92,6 @@ export default function LinkManager({ initialLinks }: { initialLinks: TLink[] })
             </button>
           </form>
         </div>
-
-        {/* Add Link Card */}
         <div className="p-6 bg-white border border-slate-200 rounded-xl shadow-sm">
           <h3 className="text-xl font-semibold mb-4 text-slate-800">Add a New Link</h3>
           <form onSubmit={handleAddLink} className="space-y-4">
@@ -118,8 +113,6 @@ export default function LinkManager({ initialLinks }: { initialLinks: TLink[] })
           </form>
         </div>
       </div>
-
-      {/* List of Links */}
       <div className="space-y-4">
         <h3 className="text-2xl font-semibold text-slate-800">Your Links</h3>
         {links.length > 0 ? (
